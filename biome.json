@@ -4,7 +4,7 @@
   "files": {
     "includes": [
       "**",
-      "!**/schema.ts",
+      "!packages/api-types/src/schema.ts",
       "!**/openapi.json",
       "!**/pnpm-lock.yaml"
     ]
