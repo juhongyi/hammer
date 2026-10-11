@@ -218,3 +218,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# PoC local configuration and generated artifacts
+.env.local
+.env.*.local
+node_modules/
+.next/
+playwright-report/
+test-results/
+.playwright-cli/
+services/api/.venv/
+services/api/.ruff_cache/
+*.tsbuildinfo
+
+# Next.js source helpers are not Python build output.
+!apps/*/src/lib/
+!apps/*/src/lib/**

@@ -1,0 +1,23 @@
+{
+  "name": "system-one-presentation-poc",
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "dev:presentation": "pnpm --filter @poc/presentation dev",
+    "dev:ontology": "pnpm --filter @poc/ontology dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck && tsc --noEmit",
+    "check": "biome check .",
+    "format": "biome check --write .",
+    "api:types": "openapi-typescript services/api/openapi.json -o packages/api-types/src/schema.ts",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@poc/api-types": "workspace:*",
+    "@types/node": "^24.10.0",
+    "@biomejs/biome": "2.5.15",
+    "@playwright/test": "1.64.0",
+    "openapi-typescript": "^7.13.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,1092 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "System One Presentation PoC",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ontology": {
+      "get": {
+        "summary": "Get Catalogue",
+        "operationId": "get_catalogue_api_ontology_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catalogue"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Save Catalogue",
+        "operationId": "save_catalogue_api_ontology_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Catalogue"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catalogue"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presentations": {
+      "get": {
+        "summary": "List Presentations",
+        "operationId": "list_presentations_api_presentations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PresentationSummary"
+                  },
+                  "type": "array",
+                  "title": "Response List Presentations Api Presentations Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Outline",
+        "operationId": "create_outline_api_presentations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresentationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presentations/{presentation_id}": {
+      "get": {
+        "summary": "Get Presentation",
+        "operationId": "get_presentation_api_presentations__presentation_id__get",
+        "parameters": [
+          {
+            "name": "presentation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Presentation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresentationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presentations/{presentation_id}/outline": {
+      "put": {
+        "summary": "Save Outline",
+        "operationId": "save_outline_api_presentations__presentation_id__outline_put",
+        "parameters": [
+          {
+            "name": "presentation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Presentation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Outline"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresentationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presentations/{presentation_id}/generate": {
+      "post": {
+        "summary": "Start Generation",
+        "operationId": "start_generation_api_presentations__presentation_id__generate_post",
+        "parameters": [
+          {
+            "name": "presentation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Presentation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresentationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presentations/{presentation_id}/validation": {
+      "post": {
+        "summary": "Validate Render",
+        "operationId": "validate_render_api_presentations__presentation_id__validation_post",
+        "parameters": [
+          {
+            "name": "presentation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Presentation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenderValidation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresentationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Block": {
+        "properties": {
+          "heading": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Heading"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 180,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "heading",
+          "text"
+        ],
+        "title": "Block"
+      },
+      "BodySlot": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "const": "body",
+            "title": "Role",
+            "default": "body"
+          },
+          "content_kind": {
+            "type": "string",
+            "const": "heading_text_blocks",
+            "title": "Content Kind",
+            "default": "heading_text_blocks"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Description"
+          },
+          "min_items": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Min Items"
+          },
+          "max_items": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Max Items"
+          },
+          "heading_max_chars": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 1.0,
+            "title": "Heading Max Chars"
+          },
+          "text_max_chars": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Text Max Chars"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "description",
+          "min_items",
+          "max_items",
+          "heading_max_chars",
+          "text_max_chars"
+        ],
+        "title": "BodySlot"
+      },
+      "Catalogue": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Version"
+          },
+          "types": {
+            "items": {
+              "$ref": "#/components/schemas/ExpressionType"
+            },
+            "type": "array",
+            "title": "Types"
+          },
+          "layouts": {
+            "items": {
+              "$ref": "#/components/schemas/Layout"
+            },
+            "type": "array",
+            "title": "Layouts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "version",
+          "types",
+          "layouts"
+        ],
+        "title": "Catalogue"
+      },
+      "ChoiceResult": {
+        "properties": {
+          "choice": {
+            "type": "string",
+            "title": "Choice"
+          },
+          "probabilities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Probabilities"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "usage": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Usage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "choice",
+          "probabilities",
+          "confidence",
+          "model",
+          "usage"
+        ],
+        "title": "ChoiceResult"
+      },
+      "DecisionTrace": {
+        "properties": {
+          "faithfulness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChoiceResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "faithfulness_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Faithfulness Request"
+          },
+          "planning": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ChoiceResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "planning_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planning Request"
+          },
+          "writing_schema": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writing Schema"
+          },
+          "classification": {
+            "$ref": "#/components/schemas/ChoiceResult"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ChoiceResult"
+          },
+          "ranked_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/RankedCandidate"
+            },
+            "type": "array",
+            "title": "Ranked Candidates"
+          },
+          "classification_request": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Classification Request"
+          },
+          "selection_request": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Selection Request"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "classification",
+          "selection",
+          "ranked_candidates",
+          "classification_request",
+          "selection_request"
+        ],
+        "title": "DecisionTrace"
+      },
+      "ExpressionType": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "introduction",
+              "emphasis",
+              "enumeration",
+              "comparison",
+              "process",
+              "closing"
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Description"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "title": "ExpressionType"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Layout": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "cover",
+              "message",
+              "list",
+              "comparison",
+              "process",
+              "closing"
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name"
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Purpose"
+          },
+          "supports": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "introduction",
+                "emphasis",
+                "enumeration",
+                "comparison",
+                "process",
+                "closing"
+              ]
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Supports"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "slots": {
+            "$ref": "#/components/schemas/Slots"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "purpose",
+          "supports",
+          "enabled",
+          "slots"
+        ],
+        "title": "Layout"
+      },
+      "Outline": {
+        "properties": {
+          "pages": {
+            "items": {
+              "$ref": "#/components/schemas/OutlinePage"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "minItems": 6,
+            "title": "Pages"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "pages"
+        ],
+        "title": "Outline"
+      },
+      "OutlinePage": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Title"
+          },
+          "key_message": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Key Message"
+          },
+          "main_content": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Main Content"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "key_message",
+          "main_content"
+        ],
+        "title": "OutlinePage"
+      },
+      "PageValidation": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Index"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "index",
+          "issues"
+        ],
+        "title": "PageValidation"
+      },
+      "PresentationSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "outline_ready",
+              "queued",
+              "generating",
+              "awaiting_validation",
+              "completed",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "page_count": {
+            "type": "integer",
+            "title": "Page Count"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "page_count",
+          "created_at"
+        ],
+        "title": "PresentationSummary"
+      },
+      "PresentationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "outline": {
+            "$ref": "#/components/schemas/Outline"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "outline_ready",
+              "queued",
+              "generating",
+              "awaiting_validation",
+              "completed",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "phase": {
+            "type": "string",
+            "title": "Phase"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Id"
+          },
+          "slides": {
+            "items": {
+              "$ref": "#/components/schemas/SlideResult"
+            },
+            "type": "array",
+            "title": "Slides"
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Catalogue"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "outline",
+          "status",
+          "phase",
+          "error",
+          "run_id",
+          "slides",
+          "snapshot",
+          "created_at"
+        ],
+        "title": "PresentationView"
+      },
+      "RankedCandidate": {
+        "properties": {
+          "layout_id": {
+            "type": "string",
+            "title": "Layout Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "probability": {
+            "type": "number",
+            "title": "Probability"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "layout_id",
+          "name",
+          "probability"
+        ],
+        "title": "RankedCandidate"
+      },
+      "RenderValidation": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "font_loaded": {
+            "type": "boolean",
+            "title": "Font Loaded"
+          },
+          "pages": {
+            "items": {
+              "$ref": "#/components/schemas/PageValidation"
+            },
+            "type": "array",
+            "title": "Pages"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "font_loaded",
+          "pages"
+        ],
+        "title": "RenderValidation"
+      },
+      "SlideContent": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "key_message": {
+            "type": "string",
+            "maxLength": 96,
+            "minLength": 1,
+            "title": "Key Message"
+          },
+          "blocks": {
+            "items": {
+              "$ref": "#/components/schemas/Block"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Blocks"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "key_message",
+          "blocks"
+        ],
+        "title": "SlideContent"
+      },
+      "SlideResult": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "content": {
+            "$ref": "#/components/schemas/SlideContent"
+          },
+          "layout": {
+            "$ref": "#/components/schemas/Layout"
+          },
+          "trace": {
+            "$ref": "#/components/schemas/DecisionTrace"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "index",
+          "content",
+          "layout",
+          "trace"
+        ],
+        "title": "SlideResult"
+      },
+      "Slots": {
+        "properties": {
+          "title": {
+            "$ref": "#/components/schemas/TextSlot"
+          },
+          "key_message": {
+            "$ref": "#/components/schemas/TextSlot"
+          },
+          "body": {
+            "$ref": "#/components/schemas/BodySlot"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "key_message",
+          "body"
+        ],
+        "title": "Slots"
+      },
+      "TextInput": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "TextInput"
+      },
+      "TextSlot": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "title",
+              "key_message"
+            ],
+            "title": "Role"
+          },
+          "content_kind": {
+            "type": "string",
+            "const": "text",
+            "title": "Content Kind",
+            "default": "text"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Description"
+          },
+          "max_chars": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Max Chars"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role",
+          "description",
+          "max_chars"
+        ],
+        "title": "TextSlot"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
