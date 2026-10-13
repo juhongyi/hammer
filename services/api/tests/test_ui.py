@@ -65,10 +65,12 @@ def servers(tmp_path):
                 process.wait(timeout=15)
 
 
-def test_browser_edit_render_ontology_and_failed_candidate_flow(servers):
+@pytest.mark.parametrize("hostname", ["localhost", "macbook"])
+def test_browser_edit_render_ontology_and_failed_candidate_flow(servers, hostname):
     api_url, web_url = servers
+    web_url = web_url.replace("localhost", hostname)
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch()
+        browser = playwright.chromium.launch(args=["--host-resolver-rules=MAP macbook 127.0.0.1"])
         page = browser.new_page(viewport={"width": 1280, "height": 900})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
