@@ -1,0 +1,35 @@
+services:
+  api:
+    build: ./services/api
+    env_file: .env
+    environment:
+      DATABASE_PATH: /data/poc.sqlite3
+    volumes:
+      - ./services/api:/app
+      - poc-data:/data
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  web:
+    build: ./apps/web
+    environment:
+      API_URL: http://api:8000
+      NEXT_TELEMETRY_DISABLED: "1"
+    volumes:
+      - ./apps/web:/app
+      - web-modules:/app/node_modules
+      - web-next:/app/.next
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  poc-data:
+  web-modules:
+  web-next:
