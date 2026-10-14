@@ -70,9 +70,9 @@ function OutlineEditor({ outline, onChange, editable }: {
           <label>핵심 메시지<textarea disabled={!editable} rows={2} value={page.message}
             onChange={e => update(o => { o.pages[pageIndex].message = e.target.value; })} /></label>
           {page.items.map((item, itemIndex) => <div className="item-fields" key={itemIndex}>
-            <label>항목 {itemIndex + 1} 제목<input disabled={!editable} value={item.title}
+            <label>소제목<input disabled={!editable} value={item.title}
               onChange={e => update(o => { o.pages[pageIndex].items[itemIndex].title = e.target.value; })} /></label>
-            <label>설명<textarea disabled={!editable} rows={2} value={item.description}
+            <label>세부내용<textarea disabled={!editable} rows={2} value={item.description}
               onChange={e => update(o => { o.pages[pageIndex].items[itemIndex].description = e.target.value; })} /></label>
           </div>)}
         </article>;
