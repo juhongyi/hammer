@@ -1,4 +1,4 @@
-# PRD: System One-native AI 프레젠테이션
+# PRD: System One-native AI 프레젠테이션 생성 웹 애플리케이션
 
 ## 1. 제품 목적
 
