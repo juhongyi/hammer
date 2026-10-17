@@ -1,0 +1,9 @@
+[project]
+name = "hammer-presentation-api"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "fastapi==0.143.2",
+    "uvicorn==0.54.0",
+    "psycopg[binary]==3.3.6",
+]
