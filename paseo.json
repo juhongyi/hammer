@@ -1,0 +1,5 @@
+{
+  "worktree": {
+    "teardown": "git -C \"$PASEO_WORKTREE_PATH\" checkout --detach\ngit -C \"$PASEO_SOURCE_CHECKOUT_PATH\" branch -D \"$PASEO_BRANCH_NAME\""
+  }
+}
