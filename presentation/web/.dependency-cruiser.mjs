@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   forbidden: [
     { name: "no-cycles", severity: "error", from: {}, to: { circular: true } },
     {

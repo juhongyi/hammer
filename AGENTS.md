@@ -9,7 +9,7 @@
 - Apply SOLID, DRY, KISS, and YAGNI pragmatically. Keep responsibilities
   focused, changes small, and abstractions justified by actual needs.
 - Follow the dependency boundaries defined in each web app's
-  `.dependency-cruiser.cjs` and each API's `pyproject.toml`.
+  `.dependency-cruiser.mjs` and each API's `pyproject.toml`.
 - Read `lefthook.yaml` for checks and tests. Run relevant checks during
   development and the full `pre-push` suite before opening a PR.
 - Run each web app's `e2e/` Playwright tests inside its web service.

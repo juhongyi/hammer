@@ -1,6 +1,7 @@
 {
   "name": "@hammer/presentation-web",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@12.11.2",
   "engines": {
     "node": "24.22.0",
@@ -12,7 +13,7 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "typecheck": "next typegen && tsc --noEmit",
-    "architecture": "depcruise src --config .dependency-cruiser.cjs",
+    "architecture": "depcruise src --config .dependency-cruiser.mjs",
     "validate": "pnpm lint && pnpm typecheck && pnpm architecture",
     "test": "vitest run",
     "test:e2e": "playwright test"
