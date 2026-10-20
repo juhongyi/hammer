@@ -3,7 +3,51 @@ name = "hammer-ontology-api"
 version = "0.1.0"
 requires-python = ">=3.14,<3.15"
 dependencies = [
-    "fastapi==0.143.2",
-    "uvicorn==0.54.0",
+    "fastapi[standard]==0.143.2",
     "psycopg[binary]==3.3.6",
+    "sqlmodel==0.0.48",
+    "alembic==1.20.0",
 ]
+
+[dependency-groups]
+dev = [
+    "import-linter==2.15",
+    "pytest==9.1.1",
+    "ruff==0.17.1",
+    "ty==0.0.89",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.importlinter]
+root_package = "app"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Application layers"
+type = "layers"
+layers = ["app.main", "app.routers", "app.services", "app.db", "app.models", "app.schemas"]
+
+[[tool.importlinter.contracts]]
+name = "Routes use services rather than persistence"
+type = "forbidden"
+source_modules = ["app.routers"]
+forbidden_modules = ["app.db", "app.models"]
+allow_indirect_imports = true
+
+[[tool.importlinter.contracts]]
+name = "Services do not depend on HTTP framework"
+type = "forbidden"
+source_modules = ["app.services"]
+forbidden_modules = ["fastapi"]

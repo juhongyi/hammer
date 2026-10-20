@@ -6,4 +6,5 @@ ENV UV_PYTHON_DOWNLOADS=never
 
 WORKDIR /workspace
 
-CMD ["sleep", "infinity"]
+ENV UV_LINK_MODE=copy
+CMD ["sh", "-c", "uv sync --locked && exec uv run --locked fastapi dev app/main.py --host 0.0.0.0"]
