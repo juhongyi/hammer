@@ -1,13 +1,30 @@
 services:
   presentation-web:
     build: ./presentation/web
+    init: true
+    restart: unless-stopped
+    shm_size: 1gb
     volumes:
       - ./presentation/web:/workspace
+    ports:
+      - "${PRESENTATION_WEB_PORT:-3000}:3000"
+    environment:
+      CI: ${CI:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
 
   presentation-api:
     build: ./presentation/api
+    init: true
+    restart: unless-stopped
     volumes:
       - ./presentation/api:/workspace
+    ports:
+      - "${PRESENTATION_API_PORT:-8000}:8000"
     environment:
       PGHOST: db
       PGPORT: "5432"
@@ -17,16 +34,39 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   ontology-web:
     build: ./ontology/web
+    init: true
+    restart: unless-stopped
+    shm_size: 1gb
     volumes:
       - ./ontology/web:/workspace
+    ports:
+      - "${ONTOLOGY_WEB_PORT:-3001}:3000"
+    environment:
+      CI: ${CI:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
 
   ontology-api:
     build: ./ontology/api
+    init: true
+    restart: unless-stopped
     volumes:
       - ./ontology/api:/workspace
+    ports:
+      - "${ONTOLOGY_API_PORT:-8001}:8000"
     environment:
       PGHOST: db
       PGPORT: "5432"
@@ -36,6 +76,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   db:
     image: postgres:18.6-bookworm

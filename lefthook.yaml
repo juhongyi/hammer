@@ -1,0 +1,42 @@
+min_version: 2.2.2
+
+pre-commit:
+  commands:
+    presentation-web:
+      glob: "{presentation/web/**,compose.yaml,lefthook.yaml}"
+      run: |
+        export COMPOSE_ENV_FILES="${COMPOSE_ENV_FILES:-.env.example}"
+        docker compose run --build --rm --no-deps --volume /workspace/.next presentation-web sh -ec 'pnpm install --frozen-lockfile && pnpm validate'
+    ontology-web:
+      glob: "{ontology/web/**,compose.yaml,lefthook.yaml}"
+      run: |
+        export COMPOSE_ENV_FILES="${COMPOSE_ENV_FILES:-.env.example}"
+        docker compose run --build --rm --no-deps --volume /workspace/.next ontology-web sh -ec 'pnpm install --frozen-lockfile && pnpm validate'
+    presentation-api:
+      glob: "{presentation/api/**,compose.yaml,lefthook.yaml}"
+      run: |
+        export COMPOSE_ENV_FILES="${COMPOSE_ENV_FILES:-.env.example}"
+        docker compose run --build --rm --no-deps presentation-api sh -ec 'uv sync --locked && uv run --locked ruff check . && uv run --locked ruff format --check . && uv run --locked ty check && uv run --locked lint-imports'
+    ontology-api:
+      glob: "{ontology/api/**,compose.yaml,lefthook.yaml}"
+      run: |
+        export COMPOSE_ENV_FILES="${COMPOSE_ENV_FILES:-.env.example}"
+        docker compose run --build --rm --no-deps ontology-api sh -ec 'uv sync --locked && uv run --locked ruff check . && uv run --locked ruff format --check . && uv run --locked ty check && uv run --locked lint-imports'
+
+pre-push:
+  commands:
+    verify:
+      run: |
+        set -eu
+        export COMPOSE_ENV_FILES="${COMPOSE_ENV_FILES:-.env.example}"
+        docker compose config --quiet
+        docker compose up --build --wait --wait-timeout 300
+        lefthook run pre-commit --all-files --no-auto-install
+        for service in presentation-api ontology-api; do
+          docker compose exec -T "$service" uv run --locked pytest
+        done
+        for service in presentation-web ontology-web; do
+          docker compose run --rm --no-deps --volume /workspace/.next "$service" pnpm build
+          docker compose exec -T "$service" pnpm test
+          docker compose exec -T "$service" pnpm test:e2e
+        done

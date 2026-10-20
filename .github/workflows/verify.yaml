@@ -1,0 +1,43 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      COMPOSE_ENV_FILES: .env.example
+      COMPOSE_PROJECT_NAME: hammer-ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Lefthook 2.2.2
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/evilmartians/lefthook/releases/download/v2.2.2/lefthook_2.2.2_Linux_x86_64 \
+            --output "$RUNNER_TEMP/lefthook"
+          chmod +x "$RUNNER_TEMP/lefthook"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Verify through the pre-push definition
+        run: lefthook run pre-push --force --no-auto-install
+      - name: Collect service logs
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failures
+          path: |
+            presentation/web/test-results/
+            ontology/web/test-results/
+          if-no-files-found: ignore
+      - name: Stop services
+        if: always()
+        run: docker compose down
