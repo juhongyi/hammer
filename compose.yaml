@@ -1,13 +1,34 @@
 services:
   presentation-web:
     build: ./presentation/web
+    restart: unless-stopped
+    ports:
+      - "${PRESENTATION_WEB_PORT:-3000}:3000"
     volumes:
       - ./presentation/web:/workspace
+      - presentation_node_modules:/workspace/node_modules
+      - presentation_next:/workspace/.next
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
 
   presentation-api:
     build: ./presentation/api
+    restart: unless-stopped
+    ports:
+      - "${PRESENTATION_API_PORT:-8000}:8000"
     volumes:
       - ./presentation/api:/workspace
+      - presentation_venv:/workspace/.venv
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     environment:
       PGHOST: db
       PGPORT: "5432"
@@ -20,13 +41,34 @@ services:
 
   ontology-web:
     build: ./ontology/web
+    restart: unless-stopped
+    ports:
+      - "${ONTOLOGY_WEB_PORT:-3001}:3000"
     volumes:
       - ./ontology/web:/workspace
+      - ontology_node_modules:/workspace/node_modules
+      - ontology_next:/workspace/.next
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
 
   ontology-api:
     build: ./ontology/api
+    restart: unless-stopped
+    ports:
+      - "${ONTOLOGY_API_PORT:-8001}:8000"
     volumes:
       - ./ontology/api:/workspace
+      - ontology_venv:/workspace/.venv
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     environment:
       PGHOST: db
       PGPORT: "5432"
@@ -36,6 +78,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  e2e:
+    build: ./harness
+    profiles: ["test"]
+    volumes:
+      - ./harness:/workspace
+      - harness_node_modules:/workspace/node_modules
+    command: ["sh", "-c", "pnpm install --frozen-lockfile && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test"]
 
   db:
     image: postgres:18.6-bookworm
@@ -54,3 +104,10 @@ services:
 
 volumes:
   postgres_data:
+  presentation_node_modules:
+  presentation_next:
+  presentation_venv:
+  ontology_node_modules:
+  ontology_next:
+  ontology_venv:
+  harness_node_modules:

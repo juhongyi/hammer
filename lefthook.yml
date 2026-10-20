@@ -1,0 +1,24 @@
+min_version: 2.2.2
+
+pre-commit:
+  commands:
+    presentation-web:
+      glob: "presentation/web/**"
+      run: APP_SERVICES="presentation-web" sh scripts/check.sh quick
+    ontology-web:
+      glob: "ontology/web/**"
+      run: APP_SERVICES="ontology-web" sh scripts/check.sh quick
+    presentation-api:
+      glob: "presentation/api/**"
+      run: APP_SERVICES="presentation-api" sh scripts/check.sh quick
+    ontology-api:
+      glob: "ontology/api/**"
+      run: APP_SERVICES="ontology-api" sh scripts/check.sh quick
+    harness:
+      glob: "{compose.yaml,.env.example,lefthook.yml,scripts/**,harness/**,.github/**}"
+      run: CHECK_HARNESS=1 sh scripts/check.sh quick
+
+pre-push:
+  commands:
+    verify:
+      run: sh scripts/check.sh all
