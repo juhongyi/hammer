@@ -1,0 +1,1 @@
+"""Ontology SQLModel definitions."""
