@@ -4,4 +4,5 @@ RUN npm install --global pnpm@12.11.2
 
 WORKDIR /workspace
 
-CMD ["sleep", "infinity"]
+ENV NEXT_TELEMETRY_DISABLED=1
+CMD ["sh", "-c", "pnpm install --frozen-lockfile && exec pnpm dev"]

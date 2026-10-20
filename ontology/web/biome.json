@@ -1,0 +1,16 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!!.next",
+      "!!node_modules",
+      "!!pnpm-lock.yaml",
+      "!!next-env.d.ts"
+    ]
+  },
+  "formatter": { "enabled": true, "indentStyle": "space" },
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } },
+  "css": { "parser": { "tailwindDirectives": true } }
+}
