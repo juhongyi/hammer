@@ -6,4 +6,49 @@ dependencies = [
     "fastapi==0.143.2",
     "uvicorn==0.54.0",
     "psycopg[binary]==3.3.6",
+    "sqlmodel==0.0.48",
+    "alembic==1.20.0",
 ]
+
+[dependency-groups]
+dev = [
+    "httpx==0.28.1",
+    "import-linter==2.15",
+    "pytest==9.1.1",
+    "ruff==0.17.1",
+    "ty==0.0.89",
+]
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.importlinter]
+root_package = "app"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "HTTP, application, and persistence layers"
+type = "layers"
+containers = ["app"]
+layers = ["main", "routers", "services", "repositories", "models | db"]
+exhaustive = true
+exhaustive_ignores = ["schemas"]
+
+[[tool.importlinter.contracts]]
+name = "Contracts are independent of application layers"
+type = "forbidden"
+source_modules = ["app.schemas"]
+forbidden_modules = ["app.main", "app.routers", "app.services", "app.repositories", "app.models", "app.db"]
+
+[[tool.importlinter.contracts]]
+name = "Database access belongs to repositories"
+type = "forbidden"
+source_modules = ["app.routers", "app.services"]
+forbidden_modules = ["app.models", "app.db", "sqlalchemy", "sqlmodel", "psycopg"]
