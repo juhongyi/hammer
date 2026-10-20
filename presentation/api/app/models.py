@@ -1,1 +1,1 @@
-"""Presentation SQLModel definitions; implemented in #9."""
+"""Presentation SQLModel definitions."""

@@ -1,1 +1,1 @@
-"""Ontology SQLModel definitions; implemented in #9."""
+"""Ontology SQLModel definitions."""

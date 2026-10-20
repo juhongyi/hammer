@@ -17,3 +17,5 @@
   or major dependencies.
 - Create atomic commits, each containing one coherent, independently
   verifiable change.
+- Write commit messages and PR titles as natural English sentences without
+  prefixes such as `feat:` or `docs:`.

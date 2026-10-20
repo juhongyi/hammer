@@ -1,1 +1,1 @@
-"""Database engine and session lifecycle; implemented in #9."""
+"""Database engine and session lifecycle."""
