@@ -1,5 +1,3 @@
-# Development Guidelines
-
 - Run dependency installation, development, and verification inside Docker
   Compose. Host Lefthook invokes container commands.
 - If a host port is occupied, select a free arbitrary port through the
@@ -15,6 +13,8 @@
 - Run each web app's `e2e/` Playwright tests inside its web service.
 - Ask the user before implementing changes to architecture, layers,
   or major dependencies.
+- When writing a work plan, include a tree diagram showing any planned
+  changes to the codebase structure.
 - Create atomic commits, each containing one coherent, independently
   verifiable change.
 - Write commit messages and PR titles as natural English sentences without
