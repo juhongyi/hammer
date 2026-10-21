@@ -6,4 +6,4 @@ ENV UV_PYTHON_DOWNLOADS=never UV_LINK_MODE=copy
 
 WORKDIR /workspace
 
-CMD ["sh", "-ec", "uv sync --locked && exec uv run --locked uvicorn app.main:app --host 0.0.0.0 --reload"]
+CMD ["sh", "-ec", "uv sync --locked && uv run --locked alembic upgrade head && exec uv run --locked uvicorn app.main:app --host 0.0.0.0 --reload"]

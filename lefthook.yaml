@@ -33,6 +33,7 @@ pre-push:
         docker compose up --build --wait --wait-timeout 300
         lefthook run pre-commit --all-files --no-auto-install
         for service in presentation-api ontology-api; do
+          docker compose exec -T "$service" uv run --locked alembic check
           docker compose exec -T "$service" uv run --locked pytest
         done
         for service in presentation-web ontology-web; do
